@@ -1,0 +1,13 @@
+[package]
+name = "rust_toy"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+
+[build-dependencies]
+# a build.rs generates c deps
+cbindgen = "0.24.0"

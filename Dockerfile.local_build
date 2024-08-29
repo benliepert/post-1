@@ -1,0 +1,26 @@
+FROM torizon/debian-cross-toolchain-armhf:3-bookworm
+
+# Add build dependencies
+RUN apt-get update && dpkg --add-architecture armhf && \
+	apt-get install -y --no-install-recommends \
+        cmake \
+        gcc \
+        libc6-dev \
+	&& apt-get clean && apt-get autoremove && rm -rf /var/lib/apt/lists/* 
+
+USER torizon
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+        && . $HOME/.cargo/env \
+        && rustup target add armv7-unknown-linux-gnueabihf
+
+# make our rust builds colorful
+ENV CARGO_TERM_COLOR=always
+
+WORKDIR /build
+# The actual build command. Configure and run cmake using all our CPUs
+# Note that sourcing cargo is necessary to have access to cargo.
+# That isn't an issue if you use a 'Rust' base docker container
+ENTRYPOINT . "$HOME/.cargo/env" && \
+    cmake . -B build -DCMAKE_BUILD_TYPE=Debug && \
+    cd build && make -j $(nproc)

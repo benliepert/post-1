@@ -1,0 +1,3 @@
+[target.armv7-unknown-linux-gnueabihf]
+# NOTE: x is a cpp file technically
+linker = "arm-linux-gnueabihf-g++"

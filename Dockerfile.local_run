@@ -1,0 +1,11 @@
+FROM --platform=linux/arm/v7 torizon/debian:3-bookworm
+
+USER torizon
+
+# Copy the main executable in
+COPY build/bin/test /app/test
+# Copy all libraries in. Our exe needs these since it was linked against it
+COPY build/lib/* /usr/lib/
+
+# Tell the main executable to run automatically
+ENTRYPOINT "/app/test"
