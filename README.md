@@ -1,0 +1,1 @@
+Accompanying blog post [here](https://benliepert.github.io/blog/posts/cbindgen-cmake-minimal-example/)
